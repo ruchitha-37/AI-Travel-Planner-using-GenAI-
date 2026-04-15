@@ -1,17 +1,23 @@
 import os
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 
 # ──────────────────────────────────────────────
-# OpenRouter Configuration
-# OpenRouter is OpenAI-compatible — just swap
-# the base_url and use your OpenRouter API key.
+# Load environment variables from .env file
+# Works in local dev; on Render use dashboard
+# env vars (no .env file needed there).
 # ──────────────────────────────────────────────
-OPENROUTER_API_KEY = os.getenv(
-    "OPENROUTER_API_KEY",
-    "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"
-)
+load_dotenv()
+
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+
+if not OPENROUTER_API_KEY:
+    raise EnvironmentError(
+        "❌ OPENROUTER_API_KEY is not set. "
+        "Create a .env file with: OPENROUTER_API_KEY=your-key-here"
+    )
 
 # Model options on OpenRouter (free-tier friendly):
 #   "openai/gpt-3.5-turbo"
