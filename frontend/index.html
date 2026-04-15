@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Travel Planner 🌍 | Smart Itinerary Generator</title>
+    <meta name="description" content="Generate personalized AI-powered travel itineraries, hotel suggestions, and cost estimates for any destination in seconds." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- Background particles -->
+    <div class="bg-particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+        <div class="header-content">
+            <div class="logo-badge">✈️ AI Powered</div>
+            <h1 class="hero-title">
+                <span class="gradient-text">AI Travel Planner</span>
+            </h1>
+            <p class="hero-subtitle">
+                Enter your dream destination & let AI craft the perfect itinerary — complete with hotels, food & budget breakdown 🗺️
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Popular Destinations Chips -->
+        <section class="destinations-section">
+            <h2 class="section-label">🔥 Popular Destinations</h2>
+            <div class="destination-chips" id="destinationChips">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+        <!-- Planner Form Card -->
+        <section class="form-card glass-card">
+            <h2 class="card-title">📋 Plan Your Trip</h2>
+
+            <div class="form-grid">
+
+                <!-- Destination -->
+                <div class="form-group full-width">
+                    <label for="destination">Destination</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📍</span>
+                        <input
+                            type="text"
+                            id="destination"
+                            placeholder="e.g. Goa, Manali, Paris..."
+                            autocomplete="off"
+                        />
+                    </div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="form-group full-width">
+                    <label for="preferences">Preferences</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🎯</span>
+                        <input
+                            type="text"
+                            id="preferences"
+                            placeholder="e.g. beach, nightlife, adventure, culture..."
+                            autocomplete="off"
+                        />
+                    </div>
+                    <div class="tag-suggestions">
+                        <span class="tag" onclick="addTag('beach')">🏖️ Beach</span>
+                        <span class="tag" onclick="addTag('adventure')">🧗 Adventure</span>
+                        <span class="tag" onclick="addTag('culture')">🏛️ Culture</span>
+                        <span class="tag" onclick="addTag('nightlife')">🎉 Nightlife</span>
+                        <span class="tag" onclick="addTag('food')">🍜 Food</span>
+                        <span class="tag" onclick="addTag('nature')">🌿 Nature</span>
+                        <span class="tag" onclick="addTag('yoga')">🧘 Yoga</span>
+                        <span class="tag" onclick="addTag('shopping')">🛍️ Shopping</span>
+                    </div>
+                </div>
+
+                <!-- Days -->
+                <div class="form-group">
+                    <label for="days">Number of Days</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📅</span>
+                        <input
+                            type="number"
+                            id="days"
+                            placeholder="3"
+                            min="1"
+                            max="30"
+                            value="3"
+                        />
+                    </div>
+                </div>
+
+                <!-- Travelers -->
+                <div class="form-group">
+                    <label for="travelers">Travelers</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👥</span>
+                        <input
+                            type="number"
+                            id="travelers"
+                            placeholder="2"
+                            min="1"
+                            max="20"
+                            value="2"
+                        />
+                    </div>
+                </div>
+
+                <!-- Budget -->
+                <div class="form-group full-width">
+                    <label>Budget Level</label>
+                    <div class="budget-selector">
+                        <button class="budget-btn active" id="budget-budget" onclick="selectBudget('budget')">
+                            💰 Budget
+                            <span class="budget-desc">under ₹2000/day</span>
+                        </button>
+                        <button class="budget-btn" id="budget-medium" onclick="selectBudget('medium')">
+                            💳 Medium
+                            <span class="budget-desc">₹2000–₹5000/day</span>
+                        </button>
+                        <button class="budget-btn" id="budget-luxury" onclick="selectBudget('luxury')">
+                            💎 Luxury
+                            <span class="budget-desc">₹5000+/day</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Submit -->
+            <button class="generate-btn" id="generateBtn" onclick="planTrip()">
+                <span id="btnText">🚀 Generate My Itinerary</span>
+                <span id="btnLoader" class="loader hidden"></span>
+            </button>
+
+        </section>
+
+        <!-- Result Card -->
+        <section class="result-card glass-card hidden" id="resultCard">
+            <div class="result-header">
+                <h2 class="card-title" id="resultTitle">Your Travel Plan 🗺️</h2>
+                <button class="copy-btn" id="copyBtn" onclick="copyItinerary()">📋 Copy</button>
+            </div>
+            <div class="result-content" id="result"></div>
+        </section>
+
+        <!-- Error Card -->
+        <section class="error-card glass-card hidden" id="errorCard">
+            <p id="errorMsg">⚠️ Something went wrong. Please try again.</p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>🤖 Powered by <strong>OpenAI GPT</strong> + <strong>FastAPI</strong> + <strong>LangChain</strong></p>
+        <p class="footer-sub">AI Travel Planner · GenAI Portfolio Project</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

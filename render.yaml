@@ -1,0 +1,23 @@
+services:
+  # ── 1. FastAPI Backend (Python Web Service) ──────────────────────────────
+  - type: web
+    name: ai-travel-planner-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false   # ← You will set this manually in Render dashboard
+    autoDeploy: true
+
+  # ── 2. Static Frontend (HTML / CSS / JS) ─────────────────────────────────
+  - type: web
+    name: ai-travel-planner-frontend
+    runtime: static
+    staticPublishPath: frontend
+    buildCommand: ""   # No build step needed for plain HTML
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    autoDeploy: true
