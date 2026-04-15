@@ -5,4 +5,4 @@
 // Example: "https://ai-travel-planner-api.onrender.com"
 // Leave empty string "" to fall back to localhost (local dev mode).
 // ─────────────────────────────────────────────────────────────────
-window.BACKEND_URL = "";  // ← Paste your Render backend URL here after deploy
+window.BACKEND_URL = "https://ai-travel-planner-using-genai.onrender.com";  // ← Paste your Render backend URL here after deploy
